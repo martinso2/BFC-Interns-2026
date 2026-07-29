@@ -3,25 +3,559 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BFC Interns 2026</title>
+    <title>Bergen Family Interns 2026</title>
+    <link rel="icon" href="assets/logos/bfc-logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Unbounded:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: "#1f9d55",
+              coral: "#ff5c3a",
+              sky: "#2eb8ff",
+              ink: "#102018",
+              mist: "#f4fbf7",
+            },
+            fontFamily: {
+              display: ["Unbounded", "sans-serif"],
+              sans: ["Sora", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --brand: #1f9d55;
+        --coral: #ff5c3a;
+        --sky: #2eb8ff;
+        --ink: #102018;
+        --mist: #f4fbf7;
+      }
+
+      body {
+        font-family: Sora, sans-serif;
+        color: var(--ink);
+        background: var(--mist);
+      }
+
+      .font-display {
+        font-family: Unbounded, sans-serif;
+      }
+
+      .hero-shell {
+        background:
+          radial-gradient(ellipse 80% 60% at 15% 20%, rgba(46, 184, 255, 0.45), transparent 55%),
+          radial-gradient(ellipse 70% 55% at 85% 15%, rgba(255, 92, 58, 0.38), transparent 50%),
+          radial-gradient(ellipse 65% 50% at 70% 85%, rgba(31, 157, 85, 0.42), transparent 55%),
+          radial-gradient(ellipse 50% 40% at 20% 80%, rgba(250, 204, 21, 0.28), transparent 50%),
+          linear-gradient(165deg, #e8fff3 0%, #eaf6ff 42%, #fff1eb 100%);
+      }
+
+      .orb {
+        position: absolute;
+        border-radius: 9999px;
+        filter: blur(40px);
+        opacity: 0.55;
+        pointer-events: none;
+        will-change: transform;
+      }
+
+      .orb-a {
+        width: 22rem;
+        height: 22rem;
+        background: #2eb8ff;
+        top: 12%;
+        left: -4rem;
+      }
+
+      .orb-b {
+        width: 18rem;
+        height: 18rem;
+        background: #ff5c3a;
+        top: 8%;
+        right: -3rem;
+      }
+
+      .orb-c {
+        width: 24rem;
+        height: 24rem;
+        background: #1f9d55;
+        bottom: -6rem;
+        right: 20%;
+      }
+
+      .logo-glow {
+        filter: drop-shadow(0 18px 40px rgba(31, 157, 85, 0.35));
+      }
+
+      .cta {
+        transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .cta:hover {
+        transform: translateY(-2px);
+        background-color: #178a49;
+      }
+
+      .cta-ghost:hover {
+        background-color: rgba(16, 32, 24, 0.06);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .orb,
+        .anim-ready {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
   </head>
-  <body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
-    <main class="mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-6 py-16">
-      <p class="text-sm font-medium tracking-wide text-emerald-400">BFC Interns 2026</p>
-      <h1 class="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
-        Plain HTML + Tailwind starter
-      </h1>
-      <p class="mt-4 max-w-xl text-lg text-slate-300">
-        Local site is ready. Edit <code class="rounded bg-slate-800 px-1.5 py-0.5 text-sm">index.html</code>
-        and refresh to see changes.
-      </p>
-      <a
-        href="https://github.com"
-        class="mt-8 inline-flex w-fit items-center rounded-lg bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
-      >
-        Connected via GitHub
-      </a>
+  <body class="antialiased">
+    <header class="site-nav fixed inset-x-0 top-0 z-50">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
+        <a href="/" class="flex items-center gap-3">
+          <img
+            src="assets/logos/bfc-logo.png"
+            alt="Bergen Family Center"
+            class="h-11 w-11 rounded-md sm:h-12 sm:w-12"
+            width="48"
+            height="48"
+          />
+          <span class="font-display text-sm font-bold tracking-tight text-ink sm:text-base">
+            Bergen Family Center
+          </span>
+        </a>
+        <a
+          href="#join"
+          class="cta rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white sm:px-5"
+        >
+          Join 2026
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-shell relative min-h-screen overflow-hidden">
+        <div class="orb orb-a" aria-hidden="true"></div>
+        <div class="orb orb-b" aria-hidden="true"></div>
+        <div class="orb orb-c" aria-hidden="true"></div>
+
+        <div
+          class="relative mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-5 pb-16 pt-28 text-center sm:px-8"
+        >
+          <img
+            src="assets/logos/bfc-logo.png"
+            alt=""
+            aria-hidden="true"
+            class="hero-logo logo-glow h-36 w-36 sm:h-44 sm:w-44 md:h-52 md:w-52"
+            width="208"
+            height="208"
+          />
+
+          <h1
+            class="hero-title font-display mt-8 max-w-4xl text-5xl font-extrabold leading-[0.95] tracking-tight text-[#0a2540] sm:text-6xl md:text-7xl"
+          >
+            Bergen Family Interns 2026
+          </h1>
+
+          <p class="hero-copy mt-5 max-w-xl text-lg leading-relaxed text-ink/70 sm:text-xl">
+            A summer that actually means something — real work, real mentors, and a crew that gets where you’re headed.
+          </p>
+
+          <div class="hero-cta mt-9 flex flex-wrap items-center justify-center gap-3">
+            <a
+              id="join"
+              href="#next"
+              class="cta rounded-xl bg-brand px-6 py-3.5 text-base font-semibold text-white"
+            >
+              See what’s next
+            </a>
+            <a
+              href="#next"
+              class="cta cta-ghost rounded-xl px-6 py-3.5 text-base font-semibold text-ink"
+            >
+              How it works
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="next" class="bg-ink text-white">
+        <div class="mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-28">
+          <p class="reveal font-display text-sm font-semibold uppercase tracking-[0.2em] text-sky">
+            For juniors &amp; seniors
+          </p>
+          <h2 class="reveal font-display mt-4 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
+            Cool opportunity. Serious growth.
+          </h2>
+          <p class="reveal mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
+            Step into community-centered work at Bergen Family Center — build skills, meet people who care, and leave with a story that stands out.
+          </p>
+        </div>
+      </section>
+
+      <section id="interns" class="bg-mist">
+        <div class="mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-28">
+          <p class="reveal font-display text-sm font-semibold uppercase tracking-[0.2em] text-brand">
+            Meet the crew
+          </p>
+          <h2 class="reveal font-display mt-4 max-w-3xl text-4xl font-bold tracking-tight text-[#0a2540] sm:text-5xl">
+            2026 Interns
+          </h2>
+          <p class="reveal mt-5 max-w-xl text-lg text-ink/65">
+            Real students, real placements, real stories from the summer.
+          </p>
+
+          <div class="mt-12 grid gap-12 md:grid-cols-2 lg:grid-cols-3 md:gap-10">
+            <a
+              href="interns/taniyah.html"
+              class="reveal group block max-w-xl transition hover:opacity-90"
+            >
+              <img
+                src="assets/images/taniyah.png"
+                alt="Portrait of Taniyah"
+                class="mb-5 h-28 w-28 rounded-2xl object-cover object-top"
+                width="112"
+                height="112"
+              />
+              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+                Taniyah
+              </h3>
+              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-coral">
+                Dwight Morrow High School · Senior
+              </p>
+              <p class="mt-3 text-lg text-ink/70">
+                Future sociology major at the Leonard Johnson Learning Center —
+                <span class="text-ink">“Everyone is a family.”</span>
+              </p>
+              <span class="mt-5 inline-block text-base font-semibold text-brand group-hover:underline">
+                View profile →
+              </span>
+            </a>
+
+            <a
+              href="interns/cassie.html"
+              class="reveal group block max-w-xl transition hover:opacity-90"
+            >
+              <img
+                src="assets/images/cassie.png"
+                alt="Portrait of Cassie"
+                class="mb-5 h-28 w-28 rounded-2xl object-cover object-top"
+                width="112"
+                height="112"
+              />
+              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+                Cassie
+              </h3>
+              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-sky">
+                Dwight Morrow High School · Senior
+              </p>
+              <p class="mt-3 text-lg text-ink/70">
+                Future FBI agent in the ADP program —
+                <span class="text-ink">loves the team and the responsibility.</span>
+              </p>
+              <span class="mt-5 inline-block text-base font-semibold text-brand group-hover:underline">
+                View profile →
+              </span>
+            </a>
+
+            <a
+              href="interns/brooklynn.html"
+              class="reveal group block max-w-xl transition hover:opacity-90"
+            >
+              <img
+                src="assets/images/brooklynn.png"
+                alt="Portrait of Brooklynn"
+                class="mb-5 h-28 w-28 rounded-2xl object-cover object-top"
+                width="112"
+                height="112"
+              />
+              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+                Brooklynn
+              </h3>
+              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-brand">
+                Westwood Regional High School · Senior
+              </p>
+              <p class="mt-3 text-lg text-ink/70">
+                Future nursing student headed to Lincoln Tech —
+                <span class="text-ink">loves working with the toddlers.</span>
+              </p>
+              <span class="mt-5 inline-block text-base font-semibold text-brand group-hover:underline">
+                View profile →
+              </span>
+            </a>
+
+            <a
+              href="interns/toryne.html"
+              class="reveal group block max-w-xl transition hover:opacity-90"
+            >
+              <img
+                src="assets/logos/bfc-logo.png"
+                alt="Bergen Family Center logo"
+                class="mb-5 h-28 w-28 rounded-2xl object-cover"
+                width="112"
+                height="112"
+              />
+              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+                Toryne
+              </h3>
+              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-coral">
+                Dwight Morrow High School · Senior
+              </p>
+              <p class="mt-3 text-lg text-ink/70">
+                Future electrician who loved summer camp —
+                <span class="text-ink">grateful BFC provided opportunity.</span>
+              </p>
+              <span class="mt-5 inline-block text-base font-semibold text-brand group-hover:underline">
+                View profile →
+              </span>
+            </a>
+
+            <a
+              href="interns/jamil.html"
+              class="reveal group block max-w-xl transition hover:opacity-90"
+            >
+              <img
+                src="assets/images/jamil.png"
+                alt="Portrait of Jamil"
+                class="mb-5 h-28 w-28 rounded-2xl object-cover object-top"
+                width="112"
+                height="112"
+              />
+              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+                Jamil
+              </h3>
+              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-sky">
+                Dwight Morrow High School · Junior
+              </p>
+              <p class="mt-3 text-lg text-ink/70">
+                Future electrician, musician, and podcaster —
+                <span class="text-ink">liked BFC for the people and the opportunity.</span>
+              </p>
+              <span class="mt-5 inline-block text-base font-semibold text-brand group-hover:underline">
+                View profile →
+              </span>
+            </a>
+
+            <a
+              href="interns/jonas.html"
+              class="reveal group block max-w-xl transition hover:opacity-90"
+            >
+              <img
+                src="assets/images/jonas.png"
+                alt="Portrait of Jonas"
+                class="mb-5 h-28 w-28 rounded-2xl object-cover object-top"
+                width="112"
+                height="112"
+              />
+              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+                Jonas
+              </h3>
+              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-brand">
+                Tenafly High School · Senior
+              </p>
+              <p class="mt-3 text-lg text-ink/70">
+                Future economics career in the ADP department —
+                <span class="text-ink">loves helping people at BFC.</span>
+              </p>
+              <span class="mt-5 inline-block text-base font-semibold text-brand group-hover:underline">
+                View profile →
+              </span>
+            </a>
+
+            <a
+              href="interns/caliya.html"
+              class="reveal group block max-w-xl transition hover:opacity-90"
+            >
+              <img
+                src="assets/logos/bfc-logo.png"
+                alt="Bergen Family Center logo"
+                class="mb-5 h-28 w-28 rounded-2xl object-cover"
+                width="112"
+                height="112"
+              />
+              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+                Caliya
+              </h3>
+              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-coral">
+                Dwight Morrow High School · Sophomore
+              </p>
+              <p class="mt-3 text-lg text-ink/70">
+                Future elementary school teacher —
+                <span class="text-ink">loved working with the children at BFC.</span>
+              </p>
+              <span class="mt-5 inline-block text-base font-semibold text-brand group-hover:underline">
+                View profile →
+              </span>
+            </a>
+
+            <a
+              href="interns/ayla.html"
+              class="reveal group block max-w-xl transition hover:opacity-90"
+            >
+              <img
+                src="assets/logos/bfc-logo.png"
+                alt="Bergen Family Center logo"
+                class="mb-5 h-28 w-28 rounded-2xl object-cover"
+                width="112"
+                height="112"
+              />
+              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+                Ayla
+              </h3>
+              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-sky">
+                University of Illinois · Junior
+              </p>
+              <p class="mt-3 text-lg text-ink/70">
+                Psychology student in HR &amp; Development —
+                <span class="text-ink">loves the work experience.</span>
+              </p>
+              <span class="mt-5 inline-block text-base font-semibold text-brand group-hover:underline">
+                View profile →
+              </span>
+            </a>
+
+            <a
+              href="interns/marie.html"
+              class="reveal group block max-w-xl transition hover:opacity-90"
+            >
+              <img
+                src="assets/images/marie.png"
+                alt="Portrait of Marie"
+                class="mb-5 h-28 w-28 rounded-2xl object-cover object-top"
+                width="112"
+                height="112"
+              />
+              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+                Marie
+              </h3>
+              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-brand">
+                Bergen Community College · Freshman
+              </p>
+              <p class="mt-3 text-lg text-ink/70">
+                Future public service career —
+                <span class="text-ink">possibly becoming a firefighter.</span>
+              </p>
+              <span class="mt-5 inline-block text-base font-semibold text-brand group-hover:underline">
+                View profile →
+              </span>
+            </a>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <footer class="border-t border-ink/10 bg-mist">
+      <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-8 sm:px-8">
+        <div class="flex items-center gap-3">
+          <img
+            src="assets/logos/bfc-logo.png"
+            alt=""
+            class="h-9 w-9 rounded-md"
+            width="36"
+            height="36"
+            aria-hidden="true"
+          />
+          <p class="text-sm text-ink/60">Bergen Family Interns 2026</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        gsap.set([".site-nav", ".hero-logo", ".hero-title", ".hero-copy", ".hero-cta", ".reveal"], {
+          opacity: 0,
+        });
+
+        if (reduced) {
+          gsap.set([".site-nav", ".hero-logo", ".hero-title", ".hero-copy", ".hero-cta", ".reveal"], {
+            opacity: 1,
+          });
+          return;
+        }
+
+        const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        intro
+          .fromTo(".site-nav", { y: -24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 })
+          .fromTo(
+            ".hero-logo",
+            { scale: 0.82, y: 28, opacity: 0 },
+            { scale: 1, y: 0, opacity: 1, duration: 0.9 },
+            "-=0.35"
+          )
+          .fromTo(
+            ".hero-title",
+            { y: 36, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.85 },
+            "-=0.45"
+          )
+          .fromTo(
+            ".hero-copy",
+            { y: 24, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.7 },
+            "-=0.5"
+          )
+          .fromTo(
+            ".hero-cta",
+            { y: 18, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.65 },
+            "-=0.45"
+          );
+
+        gsap.to(".orb-a", {
+          x: 40,
+          y: 30,
+          duration: 8,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+        gsap.to(".orb-b", {
+          x: -30,
+          y: 40,
+          duration: 9.5,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+        gsap.to(".orb-c", {
+          x: 25,
+          y: -35,
+          duration: 10,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+
+        const reveals = document.querySelectorAll(".reveal");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              gsap.to(entry.target, { opacity: 1, y: 0, duration: 0.75, ease: "power3.out" });
+              observer.unobserve(entry.target);
+            });
+          },
+          { threshold: 0.35 }
+        );
+
+        reveals.forEach((el) => {
+          gsap.set(el, { y: 28 });
+          observer.observe(el);
+        });
+      })();
+    </script>
   </body>
 </html>
