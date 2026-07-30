@@ -40,60 +40,144 @@
         --mist: #f4fbf7;
       }
 
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
         font-family: Sora, sans-serif;
         color: var(--ink);
         background: var(--mist);
+        overflow-x: hidden;
+      }
+
+      body.lightbox-open {
+        overflow: hidden;
       }
 
       .font-display {
         font-family: Unbounded, sans-serif;
       }
 
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* —— Hero: stacked on mobile, full-bleed on desktop —— */
       .hero-shell {
-        background:
-          radial-gradient(ellipse 80% 60% at 15% 20%, rgba(46, 184, 255, 0.45), transparent 55%),
-          radial-gradient(ellipse 70% 55% at 85% 15%, rgba(255, 92, 58, 0.38), transparent 50%),
-          radial-gradient(ellipse 65% 50% at 70% 85%, rgba(31, 157, 85, 0.42), transparent 55%),
-          radial-gradient(ellipse 50% 40% at 20% 80%, rgba(250, 204, 21, 0.28), transparent 50%),
-          linear-gradient(165deg, #e8fff3 0%, #eaf6ff 42%, #fff1eb 100%);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        background: #0a1812;
+        overflow: hidden;
+        padding-top: 4.25rem;
       }
 
-      .orb {
-        position: absolute;
-        border-radius: 9999px;
-        filter: blur(40px);
-        opacity: 0.55;
-        pointer-events: none;
-        will-change: transform;
+      .hero-media-wrap {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+        background: #0a1812;
       }
 
-      .orb-a {
-        width: 22rem;
-        height: 22rem;
-        background: #2eb8ff;
-        top: 12%;
-        left: -4rem;
+      .hero-media {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center center;
       }
 
-      .orb-b {
-        width: 18rem;
-        height: 18rem;
-        background: #ff5c3a;
-        top: 8%;
-        right: -3rem;
+      .hero-veil {
+        display: none;
       }
 
-      .orb-c {
-        width: 24rem;
-        height: 24rem;
-        background: #1f9d55;
-        bottom: -6rem;
-        right: 20%;
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        padding: 1.75rem 1.25rem 2.5rem;
+        background: linear-gradient(180deg, #102018 0%, #0a1812 100%);
       }
 
-      .logo-glow {
-        filter: drop-shadow(0 18px 40px rgba(31, 157, 85, 0.35));
+      @media (min-width: 768px) {
+        .hero-shell {
+          min-height: 100vh;
+          min-height: 100svh;
+          padding-top: 0;
+        }
+
+        .hero-media-wrap {
+          position: absolute;
+          inset: 0;
+          aspect-ratio: auto;
+        }
+
+        .hero-media {
+          object-fit: contain;
+          object-position: center center;
+        }
+
+        .hero-veil {
+          display: block;
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background: linear-gradient(
+            180deg,
+            rgba(10, 24, 18, 0.35) 0%,
+            rgba(10, 24, 18, 0.08) 42%,
+            rgba(10, 24, 18, 0.72) 100%
+          );
+        }
+
+        .hero-content {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          min-height: 100vh;
+          min-height: 100svh;
+          max-width: 72rem;
+          margin: 0 auto;
+          padding: 7rem 2rem 3.5rem;
+          background: transparent;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .hero-media {
+          object-position: center 28%;
+        }
+
+        .hero-content {
+          padding-bottom: 4.5rem;
+        }
+      }
+
+      .site-nav {
+        color: #fff;
+        transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease,
+          backdrop-filter 0.3s ease;
+      }
+
+      .site-nav .nav-brand {
+        color: inherit;
+      }
+
+      .site-nav.is-solid {
+        color: var(--ink);
+        background: rgba(244, 251, 247, 0.94);
+        box-shadow: 0 1px 0 rgba(16, 32, 24, 0.08);
+        backdrop-filter: blur(12px);
       }
 
       .cta {
@@ -105,37 +189,238 @@
         background-color: #178a49;
       }
 
+      .cta-ghost {
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        color: #fff;
+      }
+
       .cta-ghost:hover {
-        background-color: rgba(16, 32, 24, 0.06);
+        background-color: rgba(255, 255, 255, 0.12);
+      }
+
+      /* —— Portrait-first gallery —— */
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      @media (min-width: 480px) {
+        .gallery-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (min-width: 900px) {
+        .gallery-grid {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1rem;
+        }
+      }
+
+      .gallery-item {
+        appearance: none;
+        -webkit-appearance: none;
+        margin: 0;
+        border: 0;
+        padding: 0;
+        width: 100%;
+        display: block;
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 3 / 4;
+        background: #d9ebe0;
+        color: inherit;
+        font: inherit;
+        text-align: left;
+        cursor: zoom-in;
+        border-radius: 0.25rem;
+      }
+
+      .gallery-item.is-wide {
+        aspect-ratio: 4 / 3;
+      }
+
+      @media (min-width: 900px) {
+        .gallery-item.is-wide {
+          grid-column: span 2;
+          aspect-ratio: 16 / 10;
+        }
+      }
+
+      .gallery-item img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 18%;
+        pointer-events: none;
+        transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .gallery-item.is-wide img {
+        object-position: center center;
+      }
+
+      .gallery-item:hover img,
+      .gallery-item:focus-visible img {
+        transform: scale(1.04);
+      }
+
+      .gallery-item:focus-visible {
+        outline: 3px solid var(--brand);
+        outline-offset: 3px;
+      }
+
+      /* —— Lightbox slideshow —— */
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        background: rgba(8, 16, 12, 0.94);
+      }
+
+      .lightbox.is-open {
+        display: flex;
+      }
+
+      .lightbox-figure {
+        margin: 0;
+        width: min(100%, 56rem);
+        max-height: calc(100svh - 6.5rem);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .lightbox-figure img {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: min(78svh, calc(100svh - 9rem));
+        object-fit: contain;
+        border-radius: 0.25rem;
+      }
+
+      .lightbox-caption {
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 0.9rem;
+        text-align: center;
+        max-width: 36rem;
+        padding: 0 0.5rem;
+        line-height: 1.45;
+      }
+
+      .lightbox-close,
+      .lightbox-nav {
+        position: absolute;
+        z-index: 2;
+        display: grid;
+        place-items: center;
+        border: 0;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .lightbox-close:hover,
+      .lightbox-nav:hover {
+        background: rgba(255, 255, 255, 0.22);
+      }
+
+      .lightbox-close {
+        top: 0.85rem;
+        right: 0.85rem;
+        width: 2.75rem;
+        height: 2.75rem;
+        font-size: 1.5rem;
+        line-height: 1;
+      }
+
+      .lightbox-nav {
+        top: 50%;
+        transform: translateY(-50%);
+        width: 2.75rem;
+        height: 2.75rem;
+        font-size: 1.35rem;
+      }
+
+      .lightbox-prev {
+        left: 0.5rem;
+      }
+
+      .lightbox-next {
+        right: 0.5rem;
+      }
+
+      .lightbox-counter {
+        position: absolute;
+        top: 1.1rem;
+        left: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      @media (min-width: 768px) {
+        .lightbox {
+          padding: 2rem;
+        }
+
+        .lightbox-prev {
+          left: 1.25rem;
+        }
+
+        .lightbox-next {
+          right: 1.25rem;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .orb,
+        html {
+          scroll-behavior: auto;
+        }
+
+        .gallery-item img,
+        .hero-media,
         .anim-ready {
           animation: none !important;
           transition: none !important;
+        }
+
+        .gallery-item:hover img,
+        .gallery-item:focus-visible img {
+          transform: none;
         }
       }
     </style>
   </head>
   <body class="antialiased">
     <header class="site-nav fixed inset-x-0 top-0 z-50">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
-        <a href="/" class="flex items-center gap-3">
+      <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-8 sm:py-4">
+        <a href="/" class="flex min-w-0 items-center gap-2.5 sm:gap-3">
           <img
             src="assets/logos/bfc-logo.png"
             alt="Bergen Family Center"
-            class="h-11 w-11 rounded-md sm:h-12 sm:w-12"
+            class="h-10 w-10 shrink-0 rounded-md sm:h-12 sm:w-12"
             width="48"
             height="48"
           />
-          <span class="font-display text-sm font-bold tracking-tight text-ink sm:text-base">
+          <span class="nav-brand font-display truncate text-xs font-bold tracking-tight sm:text-base">
             Bergen Family Center
           </span>
         </a>
         <a
           href="#join"
-          class="cta rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white sm:px-5"
+          class="cta shrink-0 rounded-xl bg-brand px-3.5 py-2 text-sm font-semibold text-white sm:px-5 sm:py-2.5"
         >
           Join 2026
         </a>
@@ -143,74 +428,74 @@
     </header>
 
     <main>
-      <section class="hero-shell relative min-h-screen overflow-hidden">
-        <div class="orb orb-a" aria-hidden="true"></div>
-        <div class="orb orb-b" aria-hidden="true"></div>
-        <div class="orb orb-c" aria-hidden="true"></div>
-
-        <div
-          class="relative mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-5 pb-16 pt-28 text-center sm:px-8"
-        >
+      <section class="hero-shell">
+        <div class="hero-media-wrap">
           <img
-            src="assets/logos/bfc-logo.png"
-            alt=""
-            aria-hidden="true"
-            class="hero-logo logo-glow h-36 w-36 sm:h-44 sm:w-44 md:h-52 md:w-52"
-            width="208"
-            height="208"
+            class="hero-media"
+            src="assets/images/Interns-Hero.jpg"
+            alt="Bergen Family Center 2026 interns gathered for a group portrait"
+            width="1600"
+            height="900"
+            fetchpriority="high"
           />
+        </div>
+        <div class="hero-veil" aria-hidden="true"></div>
 
-          <h1
-            class="hero-title font-display mt-8 max-w-4xl text-5xl font-extrabold leading-[0.95] tracking-tight text-[#0a2540] sm:text-6xl md:text-7xl"
+        <div class="hero-content">
+          <p
+            class="hero-brand font-display text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-white/80 sm:text-sm sm:tracking-[0.22em]"
           >
-            Bergen Family Interns 2026
-          </h1>
-
-          <p class="hero-copy mt-5 max-w-xl text-lg leading-relaxed text-ink/70 sm:text-xl">
-            A summer that actually means something — real work, real mentors, and a crew that gets where you’re headed.
+            Bergen Family Center
           </p>
-
-          <div class="hero-cta mt-9 flex flex-wrap items-center justify-center gap-3">
+          <h1
+            class="hero-title font-display mt-3 max-w-4xl text-4xl font-extrabold leading-[0.98] tracking-tight text-white sm:mt-4 sm:text-6xl md:text-7xl"
+          >
+            Interns 2026
+          </h1>
+          <p class="hero-copy mt-4 max-w-xl text-base leading-relaxed text-white/80 sm:mt-5 sm:text-xl">
+            Real work with children, families, and older adults — and a summer that shapes what comes next.
+          </p>
+          <div class="hero-cta mt-7 flex flex-wrap items-center gap-3 sm:mt-9">
             <a
               id="join"
-              href="#next"
-              class="cta rounded-xl bg-brand px-6 py-3.5 text-base font-semibold text-white"
+              href="#gallery"
+              class="cta rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white sm:px-6 sm:py-3.5 sm:text-base"
             >
-              See what’s next
+              See them at work
             </a>
             <a
-              href="#next"
-              class="cta cta-ghost rounded-xl px-6 py-3.5 text-base font-semibold text-ink"
+              href="#interns"
+              class="cta cta-ghost rounded-xl px-5 py-3 text-sm font-semibold sm:px-6 sm:py-3.5 sm:text-base"
             >
-              How it works
+              Meet the crew
             </a>
           </div>
         </div>
       </section>
 
       <section id="next" class="bg-ink text-white">
-        <div class="mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-28">
-          <p class="reveal font-display text-sm font-semibold uppercase tracking-[0.2em] text-sky">
+        <div class="mx-auto max-w-6xl px-4 py-16 sm:px-8 sm:py-28">
+          <p class="reveal font-display text-xs font-semibold uppercase tracking-[0.2em] text-sky sm:text-sm">
             For juniors &amp; seniors
           </p>
-          <h2 class="reveal font-display mt-4 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
+          <h2 class="reveal font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:mt-4 sm:text-5xl">
             Cool opportunity. Serious growth.
           </h2>
-          <p class="reveal mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
+          <p class="reveal mt-4 max-w-2xl text-base leading-relaxed text-white/70 sm:mt-5 sm:text-lg">
             Step into community-centered work at Bergen Family Center — build skills, meet people who care, and leave with a story that stands out.
           </p>
         </div>
       </section>
 
       <section id="interns" class="bg-mist">
-        <div class="mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-28">
-          <p class="reveal font-display text-sm font-semibold uppercase tracking-[0.2em] text-brand">
+        <div class="mx-auto max-w-6xl px-4 py-16 sm:px-8 sm:py-28">
+          <p class="reveal font-display text-xs font-semibold uppercase tracking-[0.2em] text-brand sm:text-sm">
             Meet the crew
           </p>
-          <h2 class="reveal font-display mt-4 max-w-3xl text-4xl font-bold tracking-tight text-[#0a2540] sm:text-5xl">
+          <h2 class="reveal font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-[#0a2540] sm:mt-4 sm:text-5xl">
             2026 Interns
           </h2>
-          <p class="reveal mt-5 max-w-3xl text-lg leading-relaxed text-ink/65">
+          <p class="reveal mt-4 max-w-3xl text-base leading-relaxed text-ink/65 sm:mt-5 sm:text-lg">
             Bergen Family Center's interns are an important part of our team, bringing energy,
             fresh ideas, and a passion for serving the community. Working alongside experienced
             professionals, they support programs for children, families, and older adults while
@@ -219,7 +504,7 @@
             that more individuals and families receive the support they need to thrive.
           </p>
 
-          <div class="mt-12 grid gap-12 md:grid-cols-2 lg:grid-cols-3 md:gap-10">
+          <div class="mt-10 grid gap-10 sm:mt-12 sm:gap-12 md:grid-cols-2 lg:grid-cols-3 md:gap-10">
             <a
               href="interns/taniyah.html"
               class="reveal group block max-w-xl transition hover:opacity-90"
@@ -231,10 +516,10 @@
                 width="112"
                 height="112"
               />
-              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+              <h3 class="font-display text-2xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
                 Taniyah
               </h3>
-              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-coral">
+              <p class="font-display mt-3 text-[0.7rem] font-semibold uppercase leading-relaxed tracking-[0.12em] sm:text-sm sm:tracking-[0.18em] text-coral">
                 Dwight Morrow High School · Senior
               </p>
               <p class="mt-3 text-lg text-ink/70">
@@ -257,10 +542,10 @@
                 width="112"
                 height="112"
               />
-              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+              <h3 class="font-display text-2xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
                 Cassie
               </h3>
-              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-sky">
+              <p class="font-display mt-3 text-[0.7rem] font-semibold uppercase leading-relaxed tracking-[0.12em] sm:text-sm sm:tracking-[0.18em] text-sky">
                 Dwight Morrow High School · Senior
               </p>
               <p class="mt-3 text-lg text-ink/70">
@@ -283,10 +568,10 @@
                 width="112"
                 height="112"
               />
-              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+              <h3 class="font-display text-2xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
                 Brooklynn
               </h3>
-              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-brand">
+              <p class="font-display mt-3 text-[0.7rem] font-semibold uppercase leading-relaxed tracking-[0.12em] sm:text-sm sm:tracking-[0.18em] text-brand">
                 Westwood Regional High School · Senior
               </p>
               <p class="mt-3 text-lg text-ink/70">
@@ -309,10 +594,10 @@
                 width="112"
                 height="112"
               />
-              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+              <h3 class="font-display text-2xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
                 Toryne
               </h3>
-              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-coral">
+              <p class="font-display mt-3 text-[0.7rem] font-semibold uppercase leading-relaxed tracking-[0.12em] sm:text-sm sm:tracking-[0.18em] text-coral">
                 Dwight Morrow High School · Senior
               </p>
               <p class="mt-3 text-lg text-ink/70">
@@ -335,10 +620,10 @@
                 width="112"
                 height="112"
               />
-              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+              <h3 class="font-display text-2xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
                 Jamil
               </h3>
-              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-sky">
+              <p class="font-display mt-3 text-[0.7rem] font-semibold uppercase leading-relaxed tracking-[0.12em] sm:text-sm sm:tracking-[0.18em] text-sky">
                 Dwight Morrow High School · Junior
               </p>
               <p class="mt-3 text-lg text-ink/70">
@@ -361,10 +646,10 @@
                 width="112"
                 height="112"
               />
-              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+              <h3 class="font-display text-2xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
                 Jonas
               </h3>
-              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-brand">
+              <p class="font-display mt-3 text-[0.7rem] font-semibold uppercase leading-relaxed tracking-[0.12em] sm:text-sm sm:tracking-[0.18em] text-brand">
                 Tenafly High School · Senior
               </p>
               <p class="mt-3 text-lg text-ink/70">
@@ -387,10 +672,10 @@
                 width="112"
                 height="112"
               />
-              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+              <h3 class="font-display text-2xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
                 Caliya
               </h3>
-              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-coral">
+              <p class="font-display mt-3 text-[0.7rem] font-semibold uppercase leading-relaxed tracking-[0.12em] sm:text-sm sm:tracking-[0.18em] text-coral">
                 Dwight Morrow High School · Sophomore
               </p>
               <p class="mt-3 text-lg text-ink/70">
@@ -413,10 +698,10 @@
                 width="112"
                 height="112"
               />
-              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+              <h3 class="font-display text-2xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
                 Ayla
               </h3>
-              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-sky">
+              <p class="font-display mt-3 text-[0.7rem] font-semibold uppercase leading-relaxed tracking-[0.12em] sm:text-sm sm:tracking-[0.18em] text-sky">
                 University of Illinois · Junior
               </p>
               <p class="mt-3 text-lg text-ink/70">
@@ -439,10 +724,10 @@
                 width="112"
                 height="112"
               />
-              <h3 class="font-display text-3xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
+              <h3 class="font-display text-2xl font-bold tracking-tight text-[#0a2540] sm:text-4xl">
                 Marie
               </h3>
-              <p class="font-display mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-brand">
+              <p class="font-display mt-3 text-[0.7rem] font-semibold uppercase leading-relaxed tracking-[0.12em] sm:text-sm sm:tracking-[0.18em] text-brand">
                 Bergen Community College · Freshman
               </p>
               <p class="mt-3 text-lg text-ink/70">
@@ -456,20 +741,231 @@
           </div>
         </div>
       </section>
+
+      <section id="gallery" class="bg-white">
+        <div class="mx-auto max-w-6xl px-4 py-16 sm:px-8 sm:py-28">
+          <p class="reveal font-display text-xs font-semibold uppercase tracking-[0.2em] text-coral sm:text-sm">
+            Programs in action
+          </p>
+          <h2 class="reveal font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-[#0a2540] sm:mt-4 sm:text-5xl">
+            Supporting every generation
+          </h2>
+          <p class="reveal mt-4 max-w-3xl text-base leading-relaxed text-ink/65 sm:mt-5 sm:text-lg">
+            Our interns help power Bergen Family Center’s programs — supporting early childhood education,
+            assisting seniors in our Adult Daycare Program, and keeping BFC looking its very best for the
+            clients and families we serve. Tap any photo to open the slideshow.
+          </p>
+
+          <div class="gallery-grid mt-10 sm:mt-12" id="gallery-grid">
+            <button
+              type="button"
+              class="gallery-item reveal"
+              data-index="0"
+              aria-label="Open photo: Early childhood summer enrichment"
+            >
+              <img
+                src="assets/images/IMG_0029.jpeg"
+                alt="Early childhood education — summer enrichment and water play"
+                width="800"
+                height="1000"
+                loading="lazy"
+              />
+            </button>
+            <button
+              type="button"
+              class="gallery-item reveal"
+              data-index="1"
+              aria-label="Open photo: Early childhood classroom learning"
+            >
+              <img
+                src="assets/images/IMG_0052.jpeg"
+                alt="Early childhood education — hands-on learning in the classroom"
+                width="800"
+                height="1000"
+                loading="lazy"
+              />
+            </button>
+            <button
+              type="button"
+              class="gallery-item reveal"
+              data-index="2"
+              aria-label="Open photo: Adult Daycare Program welcome and support"
+            >
+              <img
+                src="assets/images/IMG_0008.jpeg"
+                alt="Adult Daycare Program — welcoming seniors with care and support"
+                width="800"
+                height="1000"
+                loading="lazy"
+              />
+            </button>
+            <button
+              type="button"
+              class="gallery-item reveal"
+              data-index="3"
+              aria-label="Open photo: Adult Daycare Program safe arrival"
+            >
+              <img
+                src="assets/images/IMG_0020.jpeg"
+                alt="Adult Daycare Program — helping seniors arrive safely each day"
+                width="800"
+                height="1000"
+                loading="lazy"
+              />
+            </button>
+            <button
+              type="button"
+              class="gallery-item reveal"
+              data-index="4"
+              aria-label="Open photo: Early childhood infant and toddler care"
+            >
+              <img
+                src="assets/images/IMG_0077.jpeg"
+                alt="Early childhood education — nurturing infant and toddler care"
+                width="800"
+                height="1000"
+                loading="lazy"
+              />
+            </button>
+            <button
+              type="button"
+              class="gallery-item reveal"
+              data-index="5"
+              aria-label="Open photo: Keeping BFC grounds looking their best"
+            >
+              <img
+                src="assets/images/IMG_9803.jpeg"
+                alt="Facilities &amp; grounds — keeping BFC looking its best for every client"
+                width="800"
+                height="1000"
+                loading="lazy"
+              />
+            </button>
+            <button
+              type="button"
+              class="gallery-item reveal is-wide"
+              data-index="6"
+              aria-label="Open photo: Team collaboration across BFC programs"
+            >
+              <img
+                src="assets/images/IMG_9762.jpeg"
+                alt="Team collaboration — preparing to support BFC programs and clients"
+                width="1200"
+                height="800"
+                loading="lazy"
+              />
+            </button>
+            <button
+              type="button"
+              class="gallery-item reveal"
+              data-index="7"
+              aria-label="Open photo: Early childhood play and development"
+            >
+              <img
+                src="assets/images/IMG_9818.jpeg"
+                alt="Early childhood education — play that builds growth and connection"
+                width="800"
+                height="1000"
+                loading="lazy"
+              />
+            </button>
+            <button
+              type="button"
+              class="gallery-item reveal"
+              data-index="8"
+              aria-label="Open photo: Program support and daily operations"
+            >
+              <img
+                src="assets/images/IMG_9789.jpeg"
+                alt="Program support — helping BFC operations run smoothly for families"
+                width="800"
+                height="1000"
+                loading="lazy"
+              />
+            </button>
+            <button
+              type="button"
+              class="gallery-item reveal"
+              data-index="9"
+              aria-label="Open photo: Adult Daycare Program transportation support"
+            >
+              <img
+                src="assets/images/IMG_0018.jpeg"
+                alt="Adult Daycare Program — assisting seniors with transportation and mobility"
+                width="800"
+                height="1000"
+                loading="lazy"
+              />
+            </button>
+            <button
+              type="button"
+              class="gallery-item reveal"
+              data-index="10"
+              aria-label="Open photo: Adult Daycare Program attentive support"
+            >
+              <img
+                src="assets/images/IMG_0011.jpeg"
+                alt="Adult Daycare Program — attentive support for older adults in our care"
+                width="800"
+                height="1000"
+                loading="lazy"
+              />
+            </button>
+            <button
+              type="button"
+              class="gallery-item reveal"
+              data-index="11"
+              aria-label="Open photo: Adult Daycare Program companionship"
+            >
+              <img
+                src="assets/images/WhatsApp-Image-2026-07-29-at-12.39.jpg"
+                alt="Adult Daycare Program — companionship and dignity for seniors"
+                width="800"
+                height="1000"
+                loading="lazy"
+              />
+            </button>
+          </div>
+        </div>
+      </section>
     </main>
 
+    <div
+      class="lightbox"
+      id="lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-label="Photo slideshow"
+    >
+      <span class="lightbox-counter" id="lightbox-counter" aria-live="polite"></span>
+      <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close slideshow">
+        ×
+      </button>
+      <button type="button" class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous photo">
+        ‹
+      </button>
+      <figure class="lightbox-figure">
+        <img id="lightbox-image" src="" alt="" />
+        <figcaption class="lightbox-caption" id="lightbox-caption"></figcaption>
+      </figure>
+      <button type="button" class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next photo">
+        ›
+      </button>
+    </div>
+
     <footer class="border-t border-ink/10 bg-mist">
-      <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-8 sm:px-8">
-        <div class="flex items-center gap-3">
+      <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-8 sm:px-8">
+        <div class="flex min-w-0 items-center gap-3">
           <img
             src="assets/logos/bfc-logo.png"
             alt=""
-            class="h-9 w-9 rounded-md"
+            class="h-9 w-9 shrink-0 rounded-md"
             width="36"
             height="36"
             aria-hidden="true"
           />
-          <p class="text-sm text-ink/60">Bergen Family Interns 2026</p>
+          <p class="truncate text-sm text-ink/60">Bergen Family Interns 2026</p>
         </div>
       </div>
     </footer>
@@ -478,88 +974,170 @@
     <script>
       (function () {
         const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const heroEls = [
+          ".site-nav",
+          ".hero-brand",
+          ".hero-title",
+          ".hero-copy",
+          ".hero-cta",
+          ".reveal",
+        ];
 
-        gsap.set([".site-nav", ".hero-logo", ".hero-title", ".hero-copy", ".hero-cta", ".reveal"], {
-          opacity: 0,
-        });
+        gsap.set(heroEls, { opacity: 0 });
+
+        const nav = document.querySelector(".site-nav");
+        const hero = document.querySelector(".hero-shell");
+        const syncNav = () => {
+          if (!nav || !hero) return;
+          nav.classList.toggle("is-solid", window.scrollY > Math.max(hero.offsetHeight - 72, 40));
+        };
+        syncNav();
+        window.addEventListener("scroll", syncNav, { passive: true });
+        window.addEventListener("resize", syncNav);
 
         if (reduced) {
-          gsap.set([".site-nav", ".hero-logo", ".hero-title", ".hero-copy", ".hero-cta", ".reveal"], {
-            opacity: 1,
-          });
-          return;
-        }
+          gsap.set(heroEls, { opacity: 1 });
+        } else {
+          const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-        const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
+          intro
+            .fromTo(
+              ".hero-media",
+              { opacity: 0 },
+              { opacity: 1, duration: 1.1, ease: "power2.out" },
+              0
+            )
+            .fromTo(".site-nav", { y: -24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 0.1)
+            .fromTo(
+              ".hero-brand",
+              { y: 20, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.65 },
+              0.25
+            )
+            .fromTo(
+              ".hero-title",
+              { y: 36, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.85 },
+              0.35
+            )
+            .fromTo(
+              ".hero-copy",
+              { y: 24, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.7 },
+              0.5
+            )
+            .fromTo(
+              ".hero-cta",
+              { y: 18, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.65 },
+              0.65
+            );
 
-        intro
-          .fromTo(".site-nav", { y: -24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 })
-          .fromTo(
-            ".hero-logo",
-            { scale: 0.82, y: 28, opacity: 0 },
-            { scale: 1, y: 0, opacity: 1, duration: 0.9 },
-            "-=0.35"
-          )
-          .fromTo(
-            ".hero-title",
-            { y: 36, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.85 },
-            "-=0.45"
-          )
-          .fromTo(
-            ".hero-copy",
-            { y: 24, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.7 },
-            "-=0.5"
-          )
-          .fromTo(
-            ".hero-cta",
-            { y: 18, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.65 },
-            "-=0.45"
+          const reveals = document.querySelectorAll(".reveal");
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                gsap.to(entry.target, { opacity: 1, y: 0, duration: 0.75, ease: "power3.out" });
+                observer.unobserve(entry.target);
+              });
+            },
+            { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
           );
 
-        gsap.to(".orb-a", {
-          x: 40,
-          y: 30,
-          duration: 8,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
-        gsap.to(".orb-b", {
-          x: -30,
-          y: 40,
-          duration: 9.5,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
-        gsap.to(".orb-c", {
-          x: 25,
-          y: -35,
-          duration: 10,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
+          reveals.forEach((el) => {
+            gsap.set(el, { y: 24 });
+            observer.observe(el);
+          });
+        }
+
+        /* Lightbox slideshow */
+        const items = Array.from(document.querySelectorAll(".gallery-item"));
+        const slides = items.map((btn) => {
+          const img = btn.querySelector("img");
+          return {
+            src: img.getAttribute("src"),
+            alt: img.getAttribute("alt") || "",
+          };
         });
 
-        const reveals = document.querySelectorAll(".reveal");
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (!entry.isIntersecting) return;
-              gsap.to(entry.target, { opacity: 1, y: 0, duration: 0.75, ease: "power3.out" });
-              observer.unobserve(entry.target);
-            });
+        const lightbox = document.getElementById("lightbox");
+        const lightboxImage = document.getElementById("lightbox-image");
+        const lightboxCaption = document.getElementById("lightbox-caption");
+        const lightboxCounter = document.getElementById("lightbox-counter");
+        const btnClose = document.getElementById("lightbox-close");
+        const btnPrev = document.getElementById("lightbox-prev");
+        const btnNext = document.getElementById("lightbox-next");
+        let current = 0;
+        let lastFocus = null;
+        let touchStartX = 0;
+
+        const showSlide = (index) => {
+          if (!slides.length) return;
+          current = (index + slides.length) % slides.length;
+          const slide = slides[current];
+          lightboxImage.src = slide.src;
+          lightboxImage.alt = slide.alt;
+          lightboxCaption.textContent = slide.alt;
+          lightboxCounter.textContent = current + 1 + " / " + slides.length;
+        };
+
+        const openLightbox = (index) => {
+          lastFocus = document.activeElement;
+          showSlide(index);
+          lightbox.classList.add("is-open");
+          lightbox.setAttribute("aria-hidden", "false");
+          document.body.classList.add("lightbox-open");
+          btnClose.focus();
+        };
+
+        const closeLightbox = () => {
+          lightbox.classList.remove("is-open");
+          lightbox.setAttribute("aria-hidden", "true");
+          document.body.classList.remove("lightbox-open");
+          lightboxImage.removeAttribute("src");
+          if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+        };
+
+        items.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            openLightbox(Number(btn.dataset.index) || 0);
+          });
+        });
+
+        btnClose.addEventListener("click", closeLightbox);
+        btnPrev.addEventListener("click", () => showSlide(current - 1));
+        btnNext.addEventListener("click", () => showSlide(current + 1));
+
+        lightbox.addEventListener("click", (event) => {
+          if (event.target === lightbox) closeLightbox();
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (!lightbox.classList.contains("is-open")) return;
+          if (event.key === "Escape") closeLightbox();
+          if (event.key === "ArrowLeft") showSlide(current - 1);
+          if (event.key === "ArrowRight") showSlide(current + 1);
+        });
+
+        lightbox.addEventListener(
+          "touchstart",
+          (event) => {
+            touchStartX = event.changedTouches[0].screenX;
           },
-          { threshold: 0.35 }
+          { passive: true }
         );
 
-        reveals.forEach((el) => {
-          gsap.set(el, { y: 28 });
-          observer.observe(el);
-        });
+        lightbox.addEventListener(
+          "touchend",
+          (event) => {
+            const delta = event.changedTouches[0].screenX - touchStartX;
+            if (Math.abs(delta) < 50) return;
+            if (delta > 0) showSlide(current - 1);
+            else showSlide(current + 1);
+          },
+          { passive: true }
+        );
       })();
     </script>
   </body>
